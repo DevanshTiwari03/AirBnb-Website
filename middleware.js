@@ -5,9 +5,8 @@ const Review = require("./models/review");
 
 module.exports.isLoggedIn = (req, res, next) => {
 
-    if (!req.isAuthenticated()) {   // checks current session me user logged in h ki nhi as passport user info save karata h
-        req.session.redirectUrl = req.originalUrl; //but passport jaese hi login krte hai redirectUrl ko reset krdeta hai isiliye save bhi karana padega agl se
-        //res.locals variables me kyuki passport ke pass access ni h delete krna ka usko
+    if (!req.isAuthenticated()) {   
+        req.session.redirectUrl = req.originalUrl;
         console.log("req.originalUrl", req.originalUrl);
 
         req.flash("error", "you must be logged in");
@@ -44,8 +43,6 @@ module.exports.isReviewAuthor = async (req, res, next) => {
 
 module.exports.validateListing = (req, res, next) => {
     let { error } = listingSchema.validate(req.body)
-
-    // console.log(error);
     if (error) {
         let errorMessage = error.details.map((el) => el.message).join(', ');
         throw new ExpressError(400, errorMessage);
@@ -54,8 +51,6 @@ module.exports.validateListing = (req, res, next) => {
 
 module.exports.validateReview = (req, res, next) => {
     let { error } = reviewSchema.validate(req.body)
-
-    // console.log(error);
     if (error) {
         let errorMessage = error.details.map((el) => el.message).join(', ');
         throw new ExpressError(400, errorMessage);
