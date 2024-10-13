@@ -13,9 +13,6 @@ const listingSchema = new Schema({
     description: String,
 
     image: {
-        // type: String, set: (v) => v === "" ? "https://imgs.search.brave.com/7k-NvPoIu3643AQthiZ7MMregEa7z1ys2WCx8320DL0/rs:fit:500:0:0/g:ce/aHR0cHM6Ly93d3cu/Z2VudXNwbGMuY29t/L21lZGlhLzEyNDIv/cGljLmpwZw" : v,
-        // default: "https://imgs.search.brave.com/7k-NvPoIu3643AQthiZ7MMregEa7z1ys2WCx8320DL0/rs:fit:500:0:0/g:ce/aHR0cHM6Ly93d3cu/Z2VudXNwbGMuY29t/L21lZGlhLzEyNDIv/cGljLmpwZw"
-        // // type: String, set: (v) => v==="" ? "default link" :v,
         url: String,
         filename: String,
     },
