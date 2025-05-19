@@ -1,18 +1,3 @@
-// app.get('/testListing', async (req, res) => {
-//     let sampleListing = new Listing({
-//         title: 'My New Villa',
-//         description: 'By the beach',
-//         price: 1200,
-//         location: "calangute,goa",
-//         country: 'india'
-//     });
-
-//     await sampleListing.save();
-//     console.log("sample was saved successfully");
-//     res.send("successful sampleListing");
-// });
-
-
 if (process.env.NODE_ENV != "production") {
     require("dotenv").config();
 }
@@ -64,7 +49,7 @@ const sessionOptions = {
     cookie: {
         expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
         maxAge: 7 * 24 * 60 * 60 * 1000,
-        httpOnly: true   //to avoid cross scripting attacks
+        httpOnly: true   
     },
 }
 app.use(session(sessionOptions));
@@ -72,10 +57,9 @@ app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));//telling passport konsi strategy use krni h
-passport.serializeUser(User.serializeUser());// when user is logged in uski info store karani padhti h session me that is serializing user...taaki baar baar login na krna  pade..untill session is closed
-passport.deserializeUser(User.deserializeUser());// when user is logged out uski  info unstore karani padhti h session me that is deserializing user
-
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 async function main() {
     await mongoose.connect(dbUrl)
@@ -93,31 +77,14 @@ app.use((req, res, next) => {
     res.locals.error = req.flash("error");
     res.locals.currentUser = req.user;
     next();
-
-})
-
-
-// app.get("/demouser", async (req, res) => {
-
-//     let fakeUser = new User({
-//         email: "student@yahooo.com",
-//         username: "rishi"
-//     });
-
-//     let registeredUser = await User.register(fakeUser, "helloworld");// 
-
-//     console.log(registeredUser);
-//     res.send(registeredUser);
-
-// })
+});
 
 app.get('/', (req, res) => {
     res.redirect('/listings')
 });
 
 app.use("/listings", lisRoutes);
-app.use("/listings/:id/reviews", revRoutes); //id yhi rh jaati hai and review file tk ni jaati 
-//isiliye params ko merge krna padhta hai server and router file tk so we use mergeParams:true
+app.use("/listings/:id/reviews", revRoutes);
 app.use("/", userRoutes);
 
 

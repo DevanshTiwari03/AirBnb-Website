@@ -11,7 +11,6 @@ module.exports.index = async (req, res) => {
 }
 
 module.exports.renderNewForm = async (req, res) => {
-    // console.log(req.user);
     res.render('./listings/new.ejs')
 }
 
@@ -26,8 +25,6 @@ module.exports.showListing = async (req, res) => {
         })
         .populate("owner");
 
-    // console.log(listing);
-
     if (!listing) {
         req.flash("error", "Listing you requested for doesn't exist!");
         res.redirect("/login");
@@ -35,29 +32,15 @@ module.exports.showListing = async (req, res) => {
         res.render('listings/show.ejs', { listing });
 }
 
-module.exports.createListing = async (req, res) => {
-    // let {title, description,price,location,country} = req.body; 
-    // let listing = req.body.listing; 
-
-    // if (!req.body.listing) {  //this to handle potential leak/hack/error while sending request from postman etc
-    // throw new ExpressError(400, "Enter proper Data of Listing")
-    // }
-    
+module.exports.createListing = async (req, res) => {    
     let response = await geocodingClient.forwardGeocode({
         query: req.body.listing.location,
         limit: 1
     }).send();
-
-    // console.log(response);
-    // console.log(response.body);
-    // console.log(response.body.features);
-    // console.log(response.body.features[0].geometry);
-    // res.send("donezz")
-
     let url = req.file.path;
     let filename = req.file.filename;
     const newListing = new Listing(req.body.listing);
-    newListing.owner = req.user._id;//passport user ki info user variable me save krata hai uski id access krrhe 
+    newListing.owner = req.user._id; 
     newListing.image = { url, filename };
     newListing.geometry = response.body.features[0].geometry;
 
@@ -84,10 +67,6 @@ module.exports.renderEditForm = async (req, res) => {
 }
 
 module.exports.updateListing = async (req, res) => {
-    // const listing = req.body.listing;
-    // console.log(listing);
-    // await Listing.findByIdAndUpdate((req.params.id), listing.value, { runValidators: true, new: true })
-    // .then((res) => { console.log(res); }).catch((err) => { console.log(err) });
     let { id } = req.params;
     let listing = await Listing.findByIdAndUpdate((id), { ...req.body.listing });
 

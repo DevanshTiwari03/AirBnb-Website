@@ -6,9 +6,6 @@ const passportLocalMongoose = require("passport-local-mongoose");
 
 const userSchema = new Schema({
     email: { type: String, required: true },
-    //username and password ko explicitly mention krne ki jarurt ni hai
-    //coz passport-local-mongoose apne aap hamare liye krdeta hai mention
-
 })
 
 userSchema.plugin(passportLocalMongoose);
