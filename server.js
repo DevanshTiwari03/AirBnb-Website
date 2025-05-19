@@ -34,7 +34,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local")
 const User = require("./models/user.js");
 const { error } = require("console");
-const dbUrl = process.env.ATLASDB_URL;
+const dbUrl = 'mongodb://127.0.0.1:27017/wanderlust';
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -47,7 +47,7 @@ app.engine("ejs", ejsMate);
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     crypto: {
-        secret: process.env.SECRET
+        secret: process.env.SECRET || 'thisisasecret'
     },
     touchAfter: 24 * 3600,
 });
@@ -58,7 +58,7 @@ store.on("error", () => {
 
 const sessionOptions = {
     store,
-    secret: process.env.SECRET,
+    secret: process.env.SECRET || 'thisisasecret',
     resave: false,
     saveUninitialized: true,
     cookie: {
